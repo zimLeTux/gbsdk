@@ -32,6 +32,7 @@ LIBC    += _divuchar.c _divschar.c _muluchar.c _mulschar.c _modschar.c _moduchar
 LIBC    += _divuint.c _divsint.c _mulint.c _modsint.c _moduint.c
 # the 32 bit functions use 10% of ROM0, so do not include them
 #LIBC    += _divulong.c _divslong.c _mullong.c _modslong.c _modulong.c
+LIBC    += _mullong.c
 LIBC_PATH := $(subst \,/,$(shell sdcc -m$(ARCH) --print-search-dirs | grep $(ARCH) | tail -n 1))/../src
 
 ifneq (1,$(words [$(LIBC_PATH)]))
@@ -44,7 +45,7 @@ BUILD    := _build
 TOOLS    := $(MYDIR)/tools
 OBJS     := $(patsubst %, $(BUILD)/%.o, $(ASM) $(SRC)) $(patsubst %, $(BUILD)/libc/%.o, $(LIBC)) $(BUILD)/gsinit.end.o
 
-CFLAGS   := -m$(ARCH) -Isrc/ -I$(MYDIR)/inc --max-allocs-per-node 25000 --opt-code-speed -Wall
+CFLAGS   := -m$(ARCH) -Isrc/ -I$(MYDIR)/inc --max-allocs-per-node 25000 --opt-code-speed
 ASFLAGS  := -isrc/ -i$(MYDIR)/inc -i$(BUILD)/assets/ -Wall
 LDFLAGS  := --pad 0xFF --wramx
 FIXFLAGS := --validate --pad-value 0xFF --title "$(PROJECT_NAME)" --mbc-type "$(MBC)" -l 0x33
